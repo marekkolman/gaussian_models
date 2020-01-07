@@ -1,0 +1,185 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[left=1.5cm,top=3.5cm,bottom=3cm,right=1.5cm]{geometry}
+%\usepackage[T1]{fontenc}
+%\usepackage{yfonts}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amssymb} % for \nrightarrow
+\usepackage[round]{natbib}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{todonotes}
+\usepackage{xcolor}
+\newtheorem{example}{Example}[section]
+\newtheorem{assumption}{Assumption}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newenvironment{proof}{\noindent \textit{Proof.}}{\hfill$\square$}
+\numberwithin{equation}{section}
+\graphicspath{{img_formulas/}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE \textbf{Formulas}}
+\end{center}
+
+\subsection{Multifactor Gaussian model}
+In a general $d$-factor \textit{Gaussian} model, the $T$--bond price $P$ follows
+\begin{equation}\label{eq:bond_price_gaussian_2f}
+  dP(t,T)/P(t,T) = r(t)dt - {\sigma _P}{(t,T)^{\rm{T}}}dW(t),
+\end{equation}
+where ${\sigma _P}(t,T), dW(t)$ are $d$-dimensional column vectors and $W$ is a $\mathbb{Q}$--Wiener. In terms of instantaneous forward rates, the above can equivalently be written in terms of instantaneous forward rates
+\begin{equation*}
+  df(t,T) = {\sigma _f}{(t,T)^{\rm{T}}}{\sigma _P}(t,T)dt + {\sigma _f}{(t,T)^{\rm{T}}}dW(t).
+\end{equation*}
+To prevent arbitrage, HJM condition must hold and we thus have based on the HJM drift restriction
+\begin{equation*}
+  df(t,T) = {\sigma _f}{(t,T)^{\rm{T}}}\int\limits_t^T {{\sigma _f}(t,u)du} dt + {\sigma _f}{(t,T)^{\rm{T}}}dW(t).
+\end{equation*}
+To ensure that this model is Markovian, the following 'separability' condition must necessarily hold.
+
+\begin{theorem}[Forward rate volatility separability condition]
+If the forward-rate volatility ${\sigma _f}(t,T)$ is separable such that
+\begin{equation*}
+  {\sigma _f}(t,T) = g(t)h(T),
+\end{equation*}
+where $g$ is a $d \times d$ deterministic matrix-valued function and $h$ is a $d$--dimensional vector-valued function,
+then $f$ is Markovian and
+\begin{equation*}
+  f(t,T) = f(0,T) + \Omega (t,T) + h{(T)^{\rm{T}}}z(t),
+\end{equation*}
+where
+\begin{eqnarray*}
+dz(t) &=& g{(t)^{\rm{T}}}dW(t), \text{ given } z(0) = 0,\\
+\Omega (t,T) &=& h{(T)^{\rm{T}}}\int\limits_0^t {g{{(s)}^{\rm{T}}}g(s)\int\limits_s^T {h(u)du} ds}.
+\end{eqnarray*}
+In particular we also have
+\begin{equation*}
+  r(t) = f(0,t) + \Omega (t,t) + h{(t)^{\rm{T}}}z(t).
+\end{equation*}
+\end{theorem}
+Note that with this separability condition in effect, the HJM drift restriction implies
+\begin{equation}\label{eq:sigmaP_gaussian2f}
+  {\sigma _P}(t,T) = \int\limits_t^T {{\sigma _f}(t,u)du}  = g(t)\int\limits_t^T {h(u)du}.
+\end{equation}
+To formulate a mathematically tractable and economically meaningful model, it is best to define a particular functional form of mean reversion. One useful choice is to set
+\begin{equation*}
+  H(t) = {\rm{diag}}(h(t)).
+\end{equation*}
+If elements of $h$ are non-zero, then $H$ is invertible and we can define a 'mean-reversion' matrix
+\begin{equation}\label{eq:MR_mat_gaussian}
+  \varkappa(t)  =  - \frac{{dH(t)}}{{dt}}H{(t)^{ - 1}}.
+\end{equation}
+It is also very useful to formulate the model in terms of state variables $x$ such that
+\begin{eqnarray}
+dx(t) &=& \left( {y(t){\bf{1}} - \varkappa (t)x(t)} \right)dt + {\left( {g(t)H(t)} \right)^{\rm{T}}}dW(t)\nonumber \\
+dy(t)/dt &=& H(t)g{(t)^{\rm{T}}}g(t)H(t) - \varkappa (t)y(t) - y(t)\varkappa (t).\label{eq:dx_dy_gaussian2f}
+\end{eqnarray}
+Here $x$ is a $d$-valued vector process with $x(0) = {\bf{0}}$ and $y(0)$ is a $d \times d$ matrix-valued deterministic function such that $y(0)={\bf{0}}$. The differential equations for can be solved for $x, y$ and this reads
+\begin{eqnarray}
+x(t) &=& H(t)\int\limits_0^t {g{{(s)}^{\rm{T}}}g(s)\left( {\int\limits_s^T {h(u)du} } \right)ds}  + H(t)z(t)\nonumber \\
+y(t) &=& H(t)\left( {\int\limits_0^t {g{{(u)}^{\rm{T}}}g(u)du} } \right)H(t).\label{eq:y_gaussian2f}
+\end{eqnarray}
+This formulation yields
+\begin{equation*}
+f(t,T) = f(0,T) + M{(t,T)^{\rm{T}}}\left( {x(t) + y(t)\int\limits_t^T {M(t,u)du} } \right)
+\end{equation*}
+with
+\begin{equation*}
+M(t,T) = H(T)H{(t)^{ - 1}}{\bf{1}}.
+\end{equation*}
+Notice that this results into a convenient representation of $r$ in terms of the state variables $x$ as
+\begin{equation*}
+  r(t) = f(t,t) = f(0,t) + \sum\limits_{i = 1}^d {{x_i}(t)}.
+\end{equation*}
+Furthermore, letting 
+\begin{equation*}
+  G(t,T) = \int\limits_t^T {M(t,u)du} ,
+\end{equation*}
+we can define a useful bond reconstitution formula. 
+\begin{definition}[Bond reconstitution formula]
+Given the above settings in place, the bond price can be computed as
+\begin{equation*}
+  P(t,T)\mathop  = \limits^\Delta  P(t,T,x) = \frac{{P(0,T)}}{{P(0,t)}}\exp \left( { - G{{(t,T)}^{\rm{T}}}x(t) - \frac{1}{2}G{{(t,T)}^{\rm{T}}}y(t)G(t,T)} \right).
+\end{equation*}
+\end{definition}
+
+\subsection{Two factor Gaussian model}
+Of a particular interest is a two factor model with \textit{constant} coefficients. Such a model will be fully determined by a mean reversion speeds $\varkappa_1, \varkappa_2$ and a diffusion matrix $\sigma(t)=\sigma$. Let us define $g$ and $h$ as
+\begin{eqnarray*}g(t) &=& \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{12}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}\\{{\sigma _{21}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{22}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}\end{array}} \right) \equiv \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}{e^{{\varkappa _1}t}}}&{{\sigma _{12}}{e^{{\varkappa _2}t}}}\\{{\sigma _{21}}{e^{{\varkappa _1}t}}}&{{\sigma _{22}}{e^{{\varkappa _2}t}}}\end{array}} \right)\\h(t) &=& \left( {\begin{array}{*{20}{c}}{{e^{ - \int\limits_0^t {{\varkappa _1}(u)du} }}}\\{{e^{ - \int\limits_0^t {{\varkappa _2}(u)du} }}}\end{array}} \right) \equiv \left( {\begin{array}{*{20}{c}}{{e^{ - {\varkappa _1}t}}}\\{{e^{ - {\varkappa _2}t}}}\end{array}} \right).
+\end{eqnarray*}
+Having a look at the diffusion coefficient (matrix) of $x$ in \eqref{eq:dx_dy_gaussian2f} gives
+\begin{equation*}
+  g(t){\rm{diag(}}h(t)) = g(t)H(t) = \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}}&{{\sigma _{12}}}\\{{\sigma _{21}}}&{{\sigma _{22}}}\end{array}} \right) = \sigma (t) \equiv \sigma.
+\end{equation*}
+Furthermore following \eqref{eq:MR_mat_gaussian} we also get a mean reversion matrix
+\begin{equation*}
+  \varkappa (t) = \varkappa  = \left( {\begin{array}{*{20}{c}}{{\varkappa _1}}&0\\0&{{\varkappa _2}}\end{array}} \right).
+\end{equation*}
+Under this setup, the state variables $x = {({x_1},{x_2})^{\rm{T}}}$ in \eqref{eq:dx_dy_gaussian2f} follow 
+\begin{eqnarray*}\left( {\begin{array}{*{20}{c}}{d{x_1}(t)}\\{d{x_2}(t)}\end{array}} \right) &=& \left( {\begin{array}{*{20}{c}}{{y_{11}}(t) + {y_{12}}(t) - {\varkappa _1}{x_1}(t)}\\{{y_{21}}(t) + {y_{22}}(t) - {\varkappa _2}{x_2}(t)}\end{array}} \right)dt + {\sigma ^{\rm{T}}}dW(t)\\ &=& \left( {\begin{array}{*{20}{c}}{{v_1}(t) - {\varkappa _1}{x_1}(t)}\\{{v_2}(t) - {\varkappa _2}{x_2}(t)}\end{array}} \right)dt + \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}}&{{\sigma _{21}}}\\{{\sigma _{12}}}&{{\sigma _{22}}}\end{array}} \right)\left( {\begin{array}{*{20}{c}}{d{W_1}(t)}\\{d{W_2}(t)}\end{array}} \right),
+\end{eqnarray*}
+where ${v_1}(t) = {y_{11}}(t) + {y_{12}}(t),{v_2}(t) = {y_{21}}(t) + {y_{22}}(t)$.
+It is convenient to write the above as two differentials
+\begin{eqnarray*}d{x_1}(t) &=& \left( {{v_1}(t) - {\varkappa _1}{x_1}(t)} \right)dt + {\sigma _{11}}d{W_1}(t) + {\sigma _{21}}d{W_2}(t)\\d{x_2}(t) &=& \left( {{v_2}(t) - {\varkappa _2}{x_2}(t)} \right)dt + {\sigma _{12}}d{W_1}(t) + {\sigma _{22}}d{W_2}(t).
+\end{eqnarray*}
+To efficiently use $y(t)$ it is useful to borrow from \eqref{eq:y_gaussian2f} and analytically evaluate the integral 
+\begin{equation*}
+\bar g(t) = \int\limits_0^t {g{{(u)}^{\rm{T}}}g(u)du}  = \left( {\begin{array}{*{20}{c}}{\frac{{({e^{2{\varkappa_1}t}} - 1)(\sigma _{11}^2 + \sigma _{21}^2)}}{{2{\varkappa_1}}}}&{\frac{{({e^{({\varkappa_1} + {\varkappa_2})t}} - 1)({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})}}{{{\varkappa_1} + {\varkappa_2}}}}\\{\frac{{({e^{({\varkappa_1} + {\varkappa_2})t}} - 1)({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})}}{{{\varkappa_1} + {\varkappa_2}}}}&{\frac{{({e^{2{\varkappa_2}t}} - 1)(\sigma _{12}^2 + \sigma _{22}^2)}}{{2{\varkappa_2}}}}\end{array}} \right).
+\end{equation*}
+Then, we can calculate inexpensive matrix multiplication $y(t) = H(t)\bar g(t)H(t)$.
+
+It is also useful to analytically compute $M$ and $G$ which gives
+\begin{equation*}
+  M(t,T) = \left( {\begin{array}{*{20}{c}}{{e^{ - {\varkappa _1}(T - t)}}}\\{{e^{ - {\varkappa _2}(T - t)}}}\end{array}} \right),G(t,T) = \left( {\begin{array}{*{20}{c}}{\frac{{1 - {e^{ - {\varkappa _1}(T - t)}}}}{{{\varkappa _1}}}}\\{\frac{{1 - {e^{ - {\varkappa _2}(T - t)}}}}{{{\varkappa _2}}}}\end{array}} \right).
+\end{equation*}
+
+For practical calculations, we often prefer to use $\mathbb{Q}_T$--measure such that
+\begin{equation*}
+  V(t) = {\mathbb{E}^\mathbb{Q}}\left[ {\left. {{e^{ - \int\limits_t^T {r(u)du} }}V(x(T),T)} \right|{\mathcal F}(t)} \right] = P(t,T){\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {\left. {V(x(T),T)} \right|{\mathcal F}(t)} \right].
+\end{equation*}
+To do this, we need to use a $T$--bond $P(\cdot, T)$ as a numeraire asset. A bond price has the dynamics \eqref{eq:bond_price_gaussian_2f} and $\sigma_P$ is necessary. We can compute $\sigma_P$ analytically and it gives
+\begin{equation*}
+  {\sigma _P}(t,T) = \left( {\begin{array}{*{20}{c}}{\frac{{1 - {e^{ - {\varkappa_1}(T - t)}}}}{{{\varkappa_1}}}{\sigma _{11}} + \frac{{1 - {e^{ - {\varkappa_2}(T - t)}}}}{{{\varkappa_2}}}{\sigma _{12}}}\\{\frac{{1 - {e^{ - {\varkappa_1}(T - t)}}}}{{{\varkappa_1}}}{\sigma _{21}} + \frac{{1 - {e^{ - {\varkappa_2}(T - t)}}}}{{{\varkappa_2}}}{\sigma _{22}}}\end{array}} \right) = \left( {\begin{array}{*{20}{c}}{{G_1}(t,T){\sigma _{11}} + {G_2}(t,T){\sigma _{12}}}\\{{G_1}(t,T){\sigma _{21}} + {G_2}(t,T){\sigma _{22}}}\end{array}} \right).
+\end{equation*}
+Thus, we have
+\begin{eqnarray*}dP(t,T)/P(t,T) &=& r(t)dt - {\sigma _P}{(t,T)^{\rm{T}}}dW(t)\\ &=& r(t)dt - {\sigma _{P,1}}(t,T)d{W_1}(t) - {\sigma _{P,2}}(t,T)d{W_2}(t)\\ &=& r(t)dt - \left( {{G_1}(t,T){\sigma _{11}} + {G_2}(t,T){\sigma _{12}}} \right)d{W_1}(t) - \left( {{G_1}(t,T){\sigma _{21}} + {G_2}(t,T){\sigma _{22}}} \right)d{W_2}(t).
+\end{eqnarray*}
+Knowing the diffusion term of the Numeraire $P$, we can use Girsanov to switch to $\mathbb{Q}$ to $\mathbb{Q}_T$, i.e.
+\begin{equation*}
+  d{W^{{\mathbb{Q}_T}}}(t) = dW(t) + {\sigma _P}(t,T)dt.
+\end{equation*}
+After substituting for $dW(t)$, this means for $dx$ that
+\begin{eqnarray*}d{x_1}(t) &=& \left( {v_1^T(t) - {\varkappa_1}{x_1}(t)} \right)dt + {\sigma _{11}}dW_1^{{\mathbb{Q}_T}}(t) + {\sigma _{21}}dW_2^{{\mathbb{Q}_T}}(t)\\d{x_2}(t) &=& \left( {v_2^T(t) - {\varkappa_2}{x_2}(t)} \right)dt + {\sigma _{12}}dW_1^{{\mathbb{Q}_T}}(t) + {\sigma _{22}}dW_2^{{\mathbb{Q}_T}}(t),
+\end{eqnarray*}
+where 
+\begin{eqnarray*}v_1^T(t) &=& {v_1}(t) - {\sigma _{11}}{\sigma _{P,1}}(t,T) - {\sigma _{21}}{\sigma _{P,2}}(t,T)\\v_2^T(t) &=& {v_2}(t) - {\sigma _{12}}{\sigma _{P,1}}(t,T) - {\sigma _{22}}{\sigma _{P,2}}(t,T).
+\end{eqnarray*}
+
+Since option pricing is based on the (joint) distribution of the state variables $x_1, x_2$, under $\mathbb{Q}_T$, we note that 
+\begin{eqnarray*}{\mathbb{E}^{{\mathbb{Q}_T}}}[{x_i}(T)] &=& \int\limits_0^T {{e^{ - (T - u){\varkappa_i}}}v_i^T(u)du}  = 0\\{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_i}(T)] &=& \int\limits_0^T {{e^{ - 2(T - u){\varkappa_i}}}(\sigma _{1i}^2 + \sigma _{2i}^2)du}  = (\sigma _{1i}^2 + \sigma _{2i}^2)\frac{{1 - {e^{ - 2{\varkappa_i}T}}}}{{2{\varkappa_i}}}\\\text{Cov}^{{\mathbb{Q}_T}}[{x_1}(T),{x_2}(T)] &=& \int\limits_0^T {{e^{ - (T - u)({\varkappa_1} + {\varkappa_2})}}({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})du}  = ({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})\frac{{1 - {e^{ - ({\varkappa_1} + {\varkappa_2})T}}}}{{{\varkappa_1} + {\varkappa_2}}}.
+\end{eqnarray*}
+Since $x_1, x_2$ are jointly normal, based on the properties of conditional normal variables we can obtain the $x_2$--conditional moments
+\begin{eqnarray*}
+  {\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {\left. {{x_1}(T)} \right|{x_2}(T) = {x_2}} \right] &=& {\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {{x_1}(T)} \right] + \frac{{\text{Cov}^{{\mathbb{Q}_T}}[{x_1}(T),{x_2}(T)]}}{{{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_2}(T)]}}({x_2} - {\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {{x_2}(T)} \right])\\
+   &=& \frac{{{\rm{Co}}{{\rm{v}}^{{\mathbb{Q}_T}}}[{x_1}(T),{x_2}(T)]}}{{{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_2}(T)]}}{x_2} = {\mu _1}(T,{x_2})\\
+   {\mathbb{V}^{{\mathbb{Q}_T}}}\left[ {\left. {{x_1}(T)} \right|{x_2}(T) = {x_2}} \right] &=& {\mathbb{V}^{{\mathbb{Q}_T}}}[{x_1}(T)] - \frac{{{{\left( {\text{Cov}^{{\mathbb{Q}_T}}[{x_1}(T),{x_2}(T)]} \right)}^2}}}{{{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_2}(T)]}} = s_1^2(T,{x_2})
+\end{eqnarray*}
+\subsection{Two-dimensional Jamshidian decomposition}
+Overall, a $T$-expiry $s$--bond price $V$ under the measure $\mathbb{Q}_T$ has the following pricing equation 
+\begin{equation*}
+  V(0) = P(0,T){\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {V(T,{x_1}(T),{x_2}(T))} \right] = \int\limits_{ - \infty }^\infty  {\left( {\int\limits_{ - \infty }^\infty  {V(T,{x_1},{x_2}){f_{{x_1}{x_2}}}({x_1},{x_2})d{x_1}} } \right)d{x_2}}.
+\end{equation*}
+This isn't a very nice formula as it involves a two-dimensional integral whose calculation isn't computationally too friendly. 
+
+
+
+
+
+\newpage
+\end{document}
