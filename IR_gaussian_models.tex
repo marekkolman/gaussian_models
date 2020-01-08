@@ -171,7 +171,20 @@ Since $x_1, x_2$ are jointly normal, based on the properties of conditional norm
    {\mathbb{V}^{{\mathbb{Q}_T}}}\left[ {\left. {{x_1}(T)} \right|{x_2}(T) = {x_2}} \right] &=& {\mathbb{V}^{{\mathbb{Q}_T}}}[{x_1}(T)] - \frac{{{{\left( {\text{Cov}^{{\mathbb{Q}_T}}[{x_1}(T),{x_2}(T)]} \right)}^2}}}{{{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_2}(T)]}} = s_1^2(T,{x_2})
 \end{eqnarray*}
 \subsection{Two-dimensional Jamshidian decomposition}
-Overall, a $T$-expiry $s$--bond price $V$ under the measure $\mathbb{Q}_T$ has the following pricing equation 
+Assume a put option $p$ expiring at $T$ on a $s$--zero-bond $P(\cdot,s)$. Such an option has a payoff
+\begin{equation*}
+  p(T;T,s,K;{x_1}(T),{x_2}(T)) = \max \left[ {K - P(T,s;{x_1}(T),{x_2}(T)),0} \right].
+\end{equation*}
+In the two-factor Gaussian model bond price $P$ is a deterministic function of $x$:
+\begin{equation*}
+  P(T,s) = \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2}(T) + A(T,s)} \right).
+\end{equation*}
+ 
+At time $t=0$, under the measure $\mathbb{Q}_T$
+
+
+
+Overall, a $T_i$-expiry $s$--bond price option $p_i$ under the measure $\mathbb{Q}_T$ has the following pricing equation 
 \begin{equation*}
   V(0) = P(0,T){\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {V(T,{x_1}(T),{x_2}(T))} \right] = \int\limits_{ - \infty }^\infty  {\left( {\int\limits_{ - \infty }^\infty  {V(T,{x_1},{x_2}){f_{{x_1}{x_2}}}({x_1},{x_2})d{x_1}} } \right)d{x_2}}.
 \end{equation*}
