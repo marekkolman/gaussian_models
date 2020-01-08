@@ -176,6 +176,16 @@ Overall, a $T$-expiry $s$--bond price $V$ under the measure $\mathbb{Q}_T$ has t
   V(0) = P(0,T){\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {V(T,{x_1}(T),{x_2}(T))} \right] = \int\limits_{ - \infty }^\infty  {\left( {\int\limits_{ - \infty }^\infty  {V(T,{x_1},{x_2}){f_{{x_1}{x_2}}}({x_1},{x_2})d{x_1}} } \right)d{x_2}}.
 \end{equation*}
 This isn't a very nice formula as it involves a two-dimensional integral whose calculation isn't computationally too friendly. 
+If we can, however, integrate out $x_1$ from the inner integral, we have 
+\begin{equation*}
+  V(T,{x_2}) = V(T,{x_2}(T) = {x_2}) = \int\limits_{ - \infty }^\infty  {V(T,{x_1},{x_2}){f_{{x_1}{x_2}}}({x_1},{x_2})d{x_1}},
+\end{equation*}
+and the above turns to 
+\begin{equation*}
+  V(0) = \int\limits_{ - \infty }^\infty  {V(T,{x_2}){f_{{x_2}}}({x_2})d{x_2}}.
+\end{equation*}
+
+
 
 
 
