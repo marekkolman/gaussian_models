@@ -28,7 +28,7 @@
 {\LARGE \textbf{Formulas}}
 \end{center}
 
-\subsection{Multifactor Gaussian model}
+\section{Multifactor Gaussian model}
 In a general $d$-factor \textit{Gaussian} model, the $T$--bond price $P$ follows
 \begin{equation}\label{eq:bond_price_gaussian_2f}
   dP(t,T)/P(t,T) = r(t)dt - {\sigma _P}{(t,T)^{\rm{T}}}dW(t),
@@ -109,7 +109,7 @@ Given the above settings in place, the bond price can be computed as
 \end{equation*}
 \end{definition}
 
-\subsection{Two factor Gaussian model}
+\subsection{Two-factor Gaussian model}
 Of a particular interest is a two factor model with \textit{constant} coefficients. Such a model will be fully determined by a mean reversion speeds $\varkappa_1, \varkappa_2$ and a diffusion matrix $\sigma(t)=\sigma$. Let us define $g$ and $h$ as
 \begin{eqnarray*}g(t) &=& \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{12}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}\\{{\sigma _{21}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{22}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}\end{array}} \right) \equiv \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}{e^{{\varkappa _1}t}}}&{{\sigma _{12}}{e^{{\varkappa _2}t}}}\\{{\sigma _{21}}{e^{{\varkappa _1}t}}}&{{\sigma _{22}}{e^{{\varkappa _2}t}}}\end{array}} \right)\\h(t) &=& \left( {\begin{array}{*{20}{c}}{{e^{ - \int\limits_0^t {{\varkappa _1}(u)du} }}}\\{{e^{ - \int\limits_0^t {{\varkappa _2}(u)du} }}}\end{array}} \right) \equiv \left( {\begin{array}{*{20}{c}}{{e^{ - {\varkappa _1}t}}}\\{{e^{ - {\varkappa _2}t}}}\end{array}} \right).
 \end{eqnarray*}
@@ -170,37 +170,33 @@ Since $x_1, x_2$ are jointly normal, based on the properties of conditional norm
    &=& \frac{{{\rm{Co}}{{\rm{v}}^{{\mathbb{Q}_T}}}[{x_1}(T),{x_2}(T)]}}{{{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_2}(T)]}}{x_2} = {\mu _1}(T,{x_2})\\
    {\mathbb{V}^{{\mathbb{Q}_T}}}\left[ {\left. {{x_1}(T)} \right|{x_2}(T) = {x_2}} \right] &=& {\mathbb{V}^{{\mathbb{Q}_T}}}[{x_1}(T)] - \frac{{{{\left( {\text{Cov}^{{\mathbb{Q}_T}}[{x_1}(T),{x_2}(T)]} \right)}^2}}}{{{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_2}(T)]}} = s_1^2(T,{x_2})
 \end{eqnarray*}
-\subsection{Two-dimensional Jamshidian decomposition}
+\subsection{Two-factor Gaussian model: bond option}
 Assume a put option $p$ expiring at $T$ on a $s$--zero-bond $P(\cdot,s)$. Such an option has a payoff
 \begin{equation*}
   p(T;T,s,K;{x_1}(T),{x_2}(T)) = \max \left[ {K - P(T,s;{x_1}(T),{x_2}(T)),0} \right].
 \end{equation*}
 In the two-factor Gaussian model bond price $P$ is a deterministic function of $x$:
 \begin{equation*}
-  P(T,s) = \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2}(T) + A(T,s)} \right).
+  P(T,s, x(T)) = \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2}(T) + A(T,s)} \right).
 \end{equation*}
- 
-At time $t=0$, under the measure $\mathbb{Q}_T$
-
-
-
-Overall, a $T_i$-expiry $s$--bond price option $p_i$ under the measure $\mathbb{Q}_T$ has the following pricing equation 
+At time $t=0$, under the measure $\mathbb{Q}_T$ the (put) bond option reads
+\begin{eqnarray*}p(0;T,s,K) &=& P(0,T)\int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {p(T;T,s,K;{x_1}(T),{x_2}(T))|{x_2}(T) = {x_2}} \right]{f_{{x_2}}}({x_2})d{x_2}} \\ &=& P(0,T)\int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {K - \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {KP(0,T) - P(0,s)\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {KP(0,T) - P(0,s)\exp \left( { - {G_1}(T,s){x_1}(T)} \right)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right){\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {{K^*} - \exp \left( { - {G_1}(T,s){x_1}(T)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}}, 
+\end{eqnarray*}
+where
 \begin{equation*}
-  V(0) = P(0,T){\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {V(T,{x_1}(T),{x_2}(T))} \right] = \int\limits_{ - \infty }^\infty  {\left( {\int\limits_{ - \infty }^\infty  {V(T,{x_1},{x_2}){f_{{x_1}{x_2}}}({x_1},{x_2})d{x_1}} } \right)d{x_2}}.
+  {K^*} = \frac{{P(0,T)}}{{P(0,s)}}\exp \left( {{G_2}(T,s){x_2} - A(T,s)} \right)K.
 \end{equation*}
-This isn't a very nice formula as it involves a two-dimensional integral whose calculation isn't computationally too friendly. 
-If we can, however, integrate out $x_1$ from the inner integral, we have 
+Thus, conditionally on $x_2(T)=x_2$ the bond option value at time $t=0$ is
+\begin{equation}\label{eq:conditional_put_gaussian2f}
+  p(0;T,s,K|{x_2}(T) = {x_2}) = P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right){\mathbb{E}^{{\mathbb{Q}_T}}}{\left[ {{K^*} - \exp \left( { - {G_1}(T,s){x_1}(T)} \right)} \right]^ + }.
+\end{equation}
+The equation \eqref{eq:conditional_put_gaussian2f} is actually a Black-Scholes-like problem and therefore
+\begin{eqnarray*}p(0;T,s,K|{x_2}(T) = {x_2}) &=& P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)\left( {{K^*}N( - {d_ - }) - {e^{\Omega (T,s,{x_2})}}N( - {d_ + })} \right)\\{d_ \pm } &=& \frac{{\Omega (T,s,{x_2}) - \ln {K^*} \pm \frac{1}{2}G_1^2(T,s)s_1^2(T,{x_2})}}{{{G_1}(T,s){s_1}(T,{x_2})}}\\\Omega (T,s,{x_2}) &=&  - {\mu _1}(T,{x_2}){G_1}(T,s) + \frac{1}{2}G_1^2(T,s)s_1^2(T,{x_2}).
+\end{eqnarray*}
+For completeness we note that an analogous $x_2$--conditional call option price would be
 \begin{equation*}
-  V(T,{x_2}) = V(T,{x_2}(T) = {x_2}) = \int\limits_{ - \infty }^\infty  {V(T,{x_1},{x_2}){f_{{x_1}{x_2}}}({x_1},{x_2})d{x_1}},
+  c(0;T,s,K|{x_2}(T) = {x_2}) = P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)\left( {{e^{\Omega (T,s,{x_2})}}N({d_ + }) - {K^*}N({d_ - })} \right).
 \end{equation*}
-and the above turns to 
-\begin{equation*}
-  V(0) = \int\limits_{ - \infty }^\infty  {V(T,{x_2}){f_{{x_2}}}({x_2})d{x_2}}.
-\end{equation*}
-
-
-
-
 
 
 
