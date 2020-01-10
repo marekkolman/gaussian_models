@@ -176,9 +176,9 @@ Assume a put option $p$ expiring at $T$ on a $s$--zero-bond $P(\cdot,s)$. Such a
   p(T;T,s,K;{x_1}(T),{x_2}(T)) = \max \left[ {K - P(T,s;{x_1}(T),{x_2}(T)),0} \right].
 \end{equation*}
 In the two-factor Gaussian model bond price $P$ is a deterministic function of $x$:
-\begin{equation*}
+\begin{equation}\label{eq:bond_price_gaussian2f}
   P(T,s, x(T)) = \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2}(T) + A(T,s)} \right).
-\end{equation*}
+\end{equation}
 At time $t=0$, under the measure $\mathbb{Q}_T$ the (put) bond option reads
 \begin{eqnarray*}p(0;T,s,K) &=& P(0,T)\int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {p(T;T,s,K;{x_1}(T),{x_2}(T))|{x_2}(T) = {x_2}} \right]{f_{{x_2}}}({x_2})d{x_2}} \\ &=& P(0,T)\int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {K - \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {KP(0,T) - P(0,s)\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {KP(0,T) - P(0,s)\exp \left( { - {G_1}(T,s){x_1}(T)} \right)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right){\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {{K^*} - \exp \left( { - {G_1}(T,s){x_1}(T)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}}, 
 \end{eqnarray*}
@@ -197,6 +197,52 @@ For completeness we note that an analogous $x_2$--conditional call option price 
 \begin{equation*}
   c(0;T,s,K|{x_2}(T) = {x_2}) = P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)\left( {{e^{\Omega (T,s,{x_2})}}N({d_ + }) - {K^*}N({d_ - })} \right).
 \end{equation*}
+\subsection{Two-factor Gaussian model: Jamshidian decomposition}
+A payer swaption $V$ with expiry $T$ has the payoff 
+\begin{equation*}
+  V({T_0}) = {\left( {1 - P({T_0},{T_N}) - K\sum\limits_{i = 1}^N {{\tau _i}P({T_0},{T_i})} } \right)^ + }.
+\end{equation*}
+The well known problem is that a direct swaption formula isn't available but bond option is so ideally we would like to leverage the knowledge of the bond option formula established above. This is possible but also not directly because the payoff can't be trivially decomposed into smaller units, only after a workaround. This workaround where a swaption payoff is decomposed into a combination of bond options is known as Jamshidian's trick and here we use a two-dimensional version.
+
+We know that according to \eqref{eq:bond_price_gaussian2f} bond price $P$ is a decreasing function of $x$ (as $G$ is always positive). Thus conditionally on $x_2(T_0)=x_2$, the bond option only pays out if ${{x_1}(T) > x_1^*({x_2})}$. We can therefore write the payoff as 
+\begin{equation*}
+  V({T_0},{x_2}) = \left( {1 - P({T_0},{T_N};{x_1}(T),{x_2}) - K\sum\limits_{i = 1}^N {{\tau _i}P({T_0},{T_i},{x_1}(T),{x_2})} } \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }},
+\end{equation*}
+where $x_1^*({x_2})$ is the breakeven value of $x_1(T)$ (for a given fixed $x_2$) that makes the swap in the swaption zero valued at $T_0$. Fixing $x_2$, $x_1^*({x_2})$ thus solves
+\begin{equation*}
+  1 - P({T_0},{T_N};x_1^*({x_2}),{x_2}) - K\sum\limits_{i = 1}^N {{\tau _i}P({T_0},{T_i},x_1^*({x_2}),{x_2})}  = 0.
+\end{equation*}
+Any univariate root-search algorithm can be used to solve this equation. Once $x_1^*({x_2})$ has been found, pseudo-strikes $K_i$ can be set up such that 
+\begin{equation*}
+  {K_i}({x_2}) = P({T_0},{T_i},x_1^*({x_2}),{x_2}),i = 1,...,N, 
+\end{equation*}
+and the above equality can be rewritten as
+\begin{equation*}
+  1 - {K_N}({x_2}) - K\sum\limits_{i = 1}^N {{\tau _i}{K_i}({x_2})}  = 0 \Rightarrow 1 = {K_N}({x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{K_i}({x_2})}.
+\end{equation*}
+In terms of $K_i$ we can write the swaption payoff as
+\small
+\begin{eqnarray*}V({T_0},{x_2}) &=& \left( {{K_N}({x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{K_i}({x_2})}  - P({T_0},{T_N};{x_1}(T),{x_2}) - K\sum\limits_{i = 1}^N {{\tau _i}P({T_0},{T_i};{x_1}(T),{x_2})} } \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }}\\ &=& \left( {{K_N}({x_2}) - P({T_0},{T_N};{x_1}(T),{x_2})} \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }} \\
+&+& K\sum\limits_{i = 1}^N {{\tau _i}\left( {{K_i}({x_2}) - P({T_0},{T_i};{x_1}(T),{x_2})} \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }}} \\ &=& {\left( {{K_N}({x_2}) - P({T_0},{T_N};{x_1}(T),{x_2})} \right)^ + } + K\sum\limits_{i = 1}^N {{\tau _i}{{\left( {{K_i}({x_2}) - P({T_0},{T_i};{x_1}(T),{x_2})} \right)}^ + }}.
+\end{eqnarray*}
+\normalsize
+This means a payer swaption can be written as a portfolio of bond put options
+\begin{equation*}
+  V(0,{x_2}) = {p_N}(0,{x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{p_i}(0,{x_2})},
+\end{equation*}
+where
+\begin{equation*}
+  {p_i}(0,{x_2}) = p(0;{T_0},{T_i},{K_i}|{x_2}(T_0) = {x_2}).
+\end{equation*}
+The unconditional payer swaption formula can then be obtained by integrating over the density of $x_2$, thus
+\begin{eqnarray*}V(0) &=& \int\limits_{ - \infty }^\infty  {\left( {{p_N}(0,{x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{p_i}(0,{x_2})} } \right){f_{{x_2}}}({x_2})d{x_2}} \nonumber \\ &=& \int\limits_{ - \infty }^\infty  {\frac{{{p_N}(0,{x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{p_i}(0,{x_2})} }}{{\sqrt {{\mathbb{V}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]} }}{f_N}\left( {\frac{{{x_2} - {\mathbb{E}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]}}{{\sqrt {{\mathbb{V}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]} }}} \right)d{x_2}},
+\end{eqnarray*}
+where $f_{x_2}$ is the density for $x_2(T_0)$, i.e. a normal density for a variable with mean ${{\mathbb{E}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T)]}$ and variance $\mathbb{V}{^{{\mathbb{Q}_{T_0}}}[{x_2}(T_0)]}$ and $f_N$ is the standard normal density.
+
+
+
+
+
 
 
 
