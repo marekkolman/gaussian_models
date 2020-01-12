@@ -6,27 +6,47 @@
 \usepackage{enumerate}
 \usepackage{amsmath}
 \usepackage{amssymb} % for \nrightarrow
-\usepackage[round]{natbib}
+\usepackage[square,sort, comma, numbers]{natbib}
 \usepackage{graphicx}
 \usepackage{epstopdf}
 \usepackage{todonotes}
 \usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor = blue, citecolor = red}
+\usepackage{theorem} % package pro nastaveni zacatku theoremu na novem radku
+\theoremstyle{break} % vynuceni noveho radku u theoremu
+
 \newtheorem{example}{Example}[section]
 \newtheorem{assumption}{Assumption}[section]
 \newtheorem{definition}{Definition}[section]
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}{Corollary}[section]
 \newenvironment{proof}{\noindent \textit{Proof.}}{\hfill$\square$}
 \numberwithin{equation}{section}
-\graphicspath{{img_formulas/}}
-
+\graphicspath{{img}}
+\usepackage{tcolorbox} % command to make a box
+\newtcolorbox[auto counter, number within = section]{pabox}[2][]{}
 \begin{document}
-
+	
+\begin{titlepage}
 \begin{center}
-{\LARGE \textbf{Formulas}}
+\textsc{\LARGE Multifactor Gaussian models}\\[0.2cm] % Name of your university/college
+Marek Kolman \\ University of Economics, Prague
 \end{center}
+\vspace{25pt}
+\begin{abstract}
+	This text serves as a simple technical document for multifactor Gaussian IR models implemented in the attached script. The model is fully based on \citep[Section 12]{piterbargII}. Attention is paid especially to a 2-factor Gaussian model. 
+	\\ \\ \noindent Related python code repository can be found at:
+\begin{pabox}{Code repository}
+	\begin{center}
+		\url{https://github.com/marekkolman/gaussian_models}
+	\end{center}
+\end{pabox}
+\noindent The code implements the two-factor model and also contains a calibration data set.
+\end{abstract}
+\end{titlepage}
 
 \section{Multifactor Gaussian model}
 In a general $d$-factor \textit{Gaussian} model, the $T$--bond price $P$ follows
@@ -102,7 +122,7 @@ Furthermore, letting
   G(t,T) = \int\limits_t^T {M(t,u)du} ,
 \end{equation*}
 we can define a useful bond reconstitution formula. 
-\begin{definition}[Bond reconstitution formula]
+\begin{definition}[Bond reconstitution formula in Gaussian models]
 Given the above settings in place, the bond price can be computed as
 \begin{equation*}
   P(t,T)\mathop  = \limits^\Delta  P(t,T,x) = \frac{{P(0,T)}}{{P(0,t)}}\exp \left( { - G{{(t,T)}^{\rm{T}}}x(t) - \frac{1}{2}G{{(t,T)}^{\rm{T}}}y(t)G(t,T)} \right).
@@ -111,32 +131,80 @@ Given the above settings in place, the bond price can be computed as
 
 \subsection{Two-factor Gaussian model}
 Of a particular interest is a two factor model with \textit{constant} coefficients. Such a model will be fully determined by a mean reversion speeds $\varkappa_1, \varkappa_2$ and a diffusion matrix $\sigma(t)=\sigma$. Let us define $g$ and $h$ as
-\begin{eqnarray*}g(t) &=& \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{12}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}\\{{\sigma _{21}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{22}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}\end{array}} \right) \equiv \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}{e^{{\varkappa _1}t}}}&{{\sigma _{12}}{e^{{\varkappa _2}t}}}\\{{\sigma _{21}}{e^{{\varkappa _1}t}}}&{{\sigma _{22}}{e^{{\varkappa _2}t}}}\end{array}} \right)\\h(t) &=& \left( {\begin{array}{*{20}{c}}{{e^{ - \int\limits_0^t {{\varkappa _1}(u)du} }}}\\{{e^{ - \int\limits_0^t {{\varkappa _2}(u)du} }}}\end{array}} \right) \equiv \left( {\begin{array}{*{20}{c}}{{e^{ - {\varkappa _1}t}}}\\{{e^{ - {\varkappa _2}t}}}\end{array}} \right).
+\begin{eqnarray*}
+g(t) &=& \left( {\begin{array}{*{20}{c}}
+{{\sigma _{11}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{12}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}\\
+{{\sigma _{21}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{22}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}
+\end{array}} \right) \equiv \left( {\begin{array}{*{20}{c}}
+{{\sigma _{11}}{e^{{\varkappa _1}t}}}&{{\sigma _{12}}{e^{{\varkappa _2}t}}}\\
+{{\sigma _{21}}{e^{{\varkappa _1}t}}}&{{\sigma _{22}}{e^{{\varkappa _2}t}}}
+\end{array}} \right)\\
+h(t) &=& \left( {\begin{array}{*{20}{c}}
+{{e^{ - \int\limits_0^t {{\varkappa _1}(u)du} }}}\\
+{{e^{ - \int\limits_0^t {{\varkappa _2}(u)du} }}}
+\end{array}} \right) \equiv \left( {\begin{array}{*{20}{c}}
+{{e^{ - {\varkappa _1}t}}}\\
+{{e^{ - {\varkappa _2}t}}}
+\end{array}} \right).
 \end{eqnarray*}
 Having a look at the diffusion coefficient (matrix) of $x$ in \eqref{eq:dx_dy_gaussian2f} gives
 \begin{equation*}
-  g(t){\rm{diag(}}h(t)) = g(t)H(t) = \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}}&{{\sigma _{12}}}\\{{\sigma _{21}}}&{{\sigma _{22}}}\end{array}} \right) = \sigma (t) \equiv \sigma.
+  g(t){\rm{diag(}}h(t)) = g(t)H(t) = \left( {\begin{array}{*{20}{c}}
+{{\sigma _{11}}}&{{\sigma _{12}}}\\
+{{\sigma _{21}}}&{{\sigma _{22}}}
+\end{array}} \right) = \sigma (t) \equiv \sigma.
 \end{equation*}
 Furthermore following \eqref{eq:MR_mat_gaussian} we also get a mean reversion matrix
 \begin{equation*}
-  \varkappa (t) = \varkappa  = \left( {\begin{array}{*{20}{c}}{{\varkappa _1}}&0\\0&{{\varkappa _2}}\end{array}} \right).
+  \varkappa (t) = \varkappa  = \left( {\begin{array}{*{20}{c}}
+{{\varkappa _1}}&0\\
+0&{{\varkappa _2}}
+\end{array}} \right).
 \end{equation*}
 Under this setup, the state variables $x = {({x_1},{x_2})^{\rm{T}}}$ in \eqref{eq:dx_dy_gaussian2f} follow 
-\begin{eqnarray*}\left( {\begin{array}{*{20}{c}}{d{x_1}(t)}\\{d{x_2}(t)}\end{array}} \right) &=& \left( {\begin{array}{*{20}{c}}{{y_{11}}(t) + {y_{12}}(t) - {\varkappa _1}{x_1}(t)}\\{{y_{21}}(t) + {y_{22}}(t) - {\varkappa _2}{x_2}(t)}\end{array}} \right)dt + {\sigma ^{\rm{T}}}dW(t)\\ &=& \left( {\begin{array}{*{20}{c}}{{v_1}(t) - {\varkappa _1}{x_1}(t)}\\{{v_2}(t) - {\varkappa _2}{x_2}(t)}\end{array}} \right)dt + \left( {\begin{array}{*{20}{c}}{{\sigma _{11}}}&{{\sigma _{21}}}\\{{\sigma _{12}}}&{{\sigma _{22}}}\end{array}} \right)\left( {\begin{array}{*{20}{c}}{d{W_1}(t)}\\{d{W_2}(t)}\end{array}} \right),
+\begin{eqnarray*}
+\left( {\begin{array}{*{20}{c}}
+{d{x_1}(t)}\\
+{d{x_2}(t)}
+\end{array}} \right) &=& \left( {\begin{array}{*{20}{c}}
+{{y_{11}}(t) + {y_{12}}(t) - {\varkappa _1}{x_1}(t)}\\
+{{y_{21}}(t) + {y_{22}}(t) - {\varkappa _2}{x_2}(t)}
+\end{array}} \right)dt + {\sigma ^{\rm{T}}}dW(t)\\
+ &=& \left( {\begin{array}{*{20}{c}}
+{{v_1}(t) - {\varkappa _1}{x_1}(t)}\\
+{{v_2}(t) - {\varkappa _2}{x_2}(t)}
+\end{array}} \right)dt + \left( {\begin{array}{*{20}{c}}
+{{\sigma _{11}}}&{{\sigma _{21}}}\\
+{{\sigma _{12}}}&{{\sigma _{22}}}
+\end{array}} \right)\left( {\begin{array}{*{20}{c}}
+{d{W_1}(t)}\\
+{d{W_2}(t)}
+\end{array}} \right),
 \end{eqnarray*}
 where ${v_1}(t) = {y_{11}}(t) + {y_{12}}(t),{v_2}(t) = {y_{21}}(t) + {y_{22}}(t)$.
 It is convenient to write the above as two differentials
-\begin{eqnarray*}d{x_1}(t) &=& \left( {{v_1}(t) - {\varkappa _1}{x_1}(t)} \right)dt + {\sigma _{11}}d{W_1}(t) + {\sigma _{21}}d{W_2}(t)\\d{x_2}(t) &=& \left( {{v_2}(t) - {\varkappa _2}{x_2}(t)} \right)dt + {\sigma _{12}}d{W_1}(t) + {\sigma _{22}}d{W_2}(t).
+\begin{eqnarray*}
+d{x_1}(t) &=& \left( {{v_1}(t) - {\varkappa _1}{x_1}(t)} \right)dt + {\sigma _{11}}d{W_1}(t) + {\sigma _{21}}d{W_2}(t)\\
+d{x_2}(t) &=& \left( {{v_2}(t) - {\varkappa _2}{x_2}(t)} \right)dt + {\sigma _{12}}d{W_1}(t) + {\sigma _{22}}d{W_2}(t).
 \end{eqnarray*}
 To efficiently use $y(t)$ it is useful to borrow from \eqref{eq:y_gaussian2f} and analytically evaluate the integral 
 \begin{equation*}
-\bar g(t) = \int\limits_0^t {g{{(u)}^{\rm{T}}}g(u)du}  = \left( {\begin{array}{*{20}{c}}{\frac{{({e^{2{\varkappa_1}t}} - 1)(\sigma _{11}^2 + \sigma _{21}^2)}}{{2{\varkappa_1}}}}&{\frac{{({e^{({\varkappa_1} + {\varkappa_2})t}} - 1)({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})}}{{{\varkappa_1} + {\varkappa_2}}}}\\{\frac{{({e^{({\varkappa_1} + {\varkappa_2})t}} - 1)({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})}}{{{\varkappa_1} + {\varkappa_2}}}}&{\frac{{({e^{2{\varkappa_2}t}} - 1)(\sigma _{12}^2 + \sigma _{22}^2)}}{{2{\varkappa_2}}}}\end{array}} \right).
+\bar g(t) = \int\limits_0^t {g{{(u)}^{\rm{T}}}g(u)du}  = \left( {\begin{array}{*{20}{c}}
+{\frac{{({e^{2{\varkappa_1}t}} - 1)(\sigma _{11}^2 + \sigma _{21}^2)}}{{2{\varkappa_1}}}}&{\frac{{({e^{({\varkappa_1} + {\varkappa_2})t}} - 1)({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})}}{{{\varkappa_1} + {\varkappa_2}}}}\\
+{\frac{{({e^{({\varkappa_1} + {\varkappa_2})t}} - 1)({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})}}{{{\varkappa_1} + {\varkappa_2}}}}&{\frac{{({e^{2{\varkappa_2}t}} - 1)(\sigma _{12}^2 + \sigma _{22}^2)}}{{2{\varkappa_2}}}}
+\end{array}} \right).
 \end{equation*}
 Then, we can calculate inexpensive matrix multiplication $y(t) = H(t)\bar g(t)H(t)$.
 
 It is also useful to analytically compute $M$ and $G$ which gives
 \begin{equation*}
-  M(t,T) = \left( {\begin{array}{*{20}{c}}{{e^{ - {\varkappa _1}(T - t)}}}\\{{e^{ - {\varkappa _2}(T - t)}}}\end{array}} \right),G(t,T) = \left( {\begin{array}{*{20}{c}}{\frac{{1 - {e^{ - {\varkappa _1}(T - t)}}}}{{{\varkappa _1}}}}\\{\frac{{1 - {e^{ - {\varkappa _2}(T - t)}}}}{{{\varkappa _2}}}}\end{array}} \right).
+  M(t,T) = \left( {\begin{array}{*{20}{c}}
+{{e^{ - {\varkappa _1}(T - t)}}}\\
+{{e^{ - {\varkappa _2}(T - t)}}}
+\end{array}} \right),G(t,T) = \left( {\begin{array}{*{20}{c}}
+{\frac{{1 - {e^{ - {\varkappa _1}(T - t)}}}}{{{\varkappa _1}}}}\\
+{\frac{{1 - {e^{ - {\varkappa _2}(T - t)}}}}{{{\varkappa _2}}}}
+\end{array}} \right).
 \end{equation*}
 
 For practical calculations, we often prefer to use $\mathbb{Q}_T$--measure such that
@@ -145,24 +213,40 @@ For practical calculations, we often prefer to use $\mathbb{Q}_T$--measure such 
 \end{equation*}
 To do this, we need to use a $T$--bond $P(\cdot, T)$ as a numeraire asset. A bond price has the dynamics \eqref{eq:bond_price_gaussian_2f} and $\sigma_P$ is necessary. We can compute $\sigma_P$ analytically and it gives
 \begin{equation*}
-  {\sigma _P}(t,T) = \left( {\begin{array}{*{20}{c}}{\frac{{1 - {e^{ - {\varkappa_1}(T - t)}}}}{{{\varkappa_1}}}{\sigma _{11}} + \frac{{1 - {e^{ - {\varkappa_2}(T - t)}}}}{{{\varkappa_2}}}{\sigma _{12}}}\\{\frac{{1 - {e^{ - {\varkappa_1}(T - t)}}}}{{{\varkappa_1}}}{\sigma _{21}} + \frac{{1 - {e^{ - {\varkappa_2}(T - t)}}}}{{{\varkappa_2}}}{\sigma _{22}}}\end{array}} \right) = \left( {\begin{array}{*{20}{c}}{{G_1}(t,T){\sigma _{11}} + {G_2}(t,T){\sigma _{12}}}\\{{G_1}(t,T){\sigma _{21}} + {G_2}(t,T){\sigma _{22}}}\end{array}} \right).
+  {\sigma _P}(t,T) = \left( {\begin{array}{*{20}{c}}
+{\frac{{1 - {e^{ - {\varkappa_1}(T - t)}}}}{{{\varkappa_1}}}{\sigma _{11}} + \frac{{1 - {e^{ - {\varkappa_2}(T - t)}}}}{{{\varkappa_2}}}{\sigma _{12}}}\\
+{\frac{{1 - {e^{ - {\varkappa_1}(T - t)}}}}{{{\varkappa_1}}}{\sigma _{21}} + \frac{{1 - {e^{ - {\varkappa_2}(T - t)}}}}{{{\varkappa_2}}}{\sigma _{22}}}
+\end{array}} \right) = \left( {\begin{array}{*{20}{c}}
+{{G_1}(t,T){\sigma _{11}} + {G_2}(t,T){\sigma _{12}}}\\
+{{G_1}(t,T){\sigma _{21}} + {G_2}(t,T){\sigma _{22}}}
+\end{array}} \right).
 \end{equation*}
 Thus, we have
-\begin{eqnarray*}dP(t,T)/P(t,T) &=& r(t)dt - {\sigma _P}{(t,T)^{\rm{T}}}dW(t)\\ &=& r(t)dt - {\sigma _{P,1}}(t,T)d{W_1}(t) - {\sigma _{P,2}}(t,T)d{W_2}(t)\\ &=& r(t)dt - \left( {{G_1}(t,T){\sigma _{11}} + {G_2}(t,T){\sigma _{12}}} \right)d{W_1}(t) - \left( {{G_1}(t,T){\sigma _{21}} + {G_2}(t,T){\sigma _{22}}} \right)d{W_2}(t).
+\begin{eqnarray*}
+dP(t,T)/P(t,T) &=& r(t)dt - {\sigma _P}{(t,T)^{\rm{T}}}dW(t)\\
+ &=& r(t)dt - {\sigma _{P,1}}(t,T)d{W_1}(t) - {\sigma _{P,2}}(t,T)d{W_2}(t)\\
+ &=& r(t)dt - \left( {{G_1}(t,T){\sigma _{11}} + {G_2}(t,T){\sigma _{12}}} \right)d{W_1}(t) - \left( {{G_1}(t,T){\sigma _{21}} + {G_2}(t,T){\sigma _{22}}} \right)d{W_2}(t).
 \end{eqnarray*}
 Knowing the diffusion term of the Numeraire $P$, we can use Girsanov to switch to $\mathbb{Q}$ to $\mathbb{Q}_T$, i.e.
 \begin{equation*}
   d{W^{{\mathbb{Q}_T}}}(t) = dW(t) + {\sigma _P}(t,T)dt.
 \end{equation*}
 After substituting for $dW(t)$, this means for $dx$ that
-\begin{eqnarray*}d{x_1}(t) &=& \left( {v_1^T(t) - {\varkappa_1}{x_1}(t)} \right)dt + {\sigma _{11}}dW_1^{{\mathbb{Q}_T}}(t) + {\sigma _{21}}dW_2^{{\mathbb{Q}_T}}(t)\\d{x_2}(t) &=& \left( {v_2^T(t) - {\varkappa_2}{x_2}(t)} \right)dt + {\sigma _{12}}dW_1^{{\mathbb{Q}_T}}(t) + {\sigma _{22}}dW_2^{{\mathbb{Q}_T}}(t),
+\begin{eqnarray*}
+d{x_1}(t) &=& \left( {v_1^T(t) - {\varkappa_1}{x_1}(t)} \right)dt + {\sigma _{11}}dW_1^{{\mathbb{Q}_T}}(t) + {\sigma _{21}}dW_2^{{\mathbb{Q}_T}}(t)\\
+d{x_2}(t) &=& \left( {v_2^T(t) - {\varkappa_2}{x_2}(t)} \right)dt + {\sigma _{12}}dW_1^{{\mathbb{Q}_T}}(t) + {\sigma _{22}}dW_2^{{\mathbb{Q}_T}}(t),
 \end{eqnarray*}
 where 
-\begin{eqnarray*}v_1^T(t) &=& {v_1}(t) - {\sigma _{11}}{\sigma _{P,1}}(t,T) - {\sigma _{21}}{\sigma _{P,2}}(t,T)\\v_2^T(t) &=& {v_2}(t) - {\sigma _{12}}{\sigma _{P,1}}(t,T) - {\sigma _{22}}{\sigma _{P,2}}(t,T).
+\begin{eqnarray*}
+v_1^T(t) &=& {v_1}(t) - {\sigma _{11}}{\sigma _{P,1}}(t,T) - {\sigma _{21}}{\sigma _{P,2}}(t,T)\\
+v_2^T(t) &=& {v_2}(t) - {\sigma _{12}}{\sigma _{P,1}}(t,T) - {\sigma _{22}}{\sigma _{P,2}}(t,T).
 \end{eqnarray*}
 
 Since option pricing is based on the (joint) distribution of the state variables $x_1, x_2$, under $\mathbb{Q}_T$, we note that 
-\begin{eqnarray*}{\mathbb{E}^{{\mathbb{Q}_T}}}[{x_i}(T)] &=& \int\limits_0^T {{e^{ - (T - u){\varkappa_i}}}v_i^T(u)du}  = 0\\{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_i}(T)] &=& \int\limits_0^T {{e^{ - 2(T - u){\varkappa_i}}}(\sigma _{1i}^2 + \sigma _{2i}^2)du}  = (\sigma _{1i}^2 + \sigma _{2i}^2)\frac{{1 - {e^{ - 2{\varkappa_i}T}}}}{{2{\varkappa_i}}}\\\text{Cov}^{{\mathbb{Q}_T}}[{x_1}(T),{x_2}(T)] &=& \int\limits_0^T {{e^{ - (T - u)({\varkappa_1} + {\varkappa_2})}}({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})du}  = ({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})\frac{{1 - {e^{ - ({\varkappa_1} + {\varkappa_2})T}}}}{{{\varkappa_1} + {\varkappa_2}}}.
+\begin{eqnarray*}
+{\mathbb{E}^{{\mathbb{Q}_T}}}[{x_i}(T)] &=& \int\limits_0^T {{e^{ - (T - u){\varkappa_i}}}v_i^T(u)du}  = 0\\
+{\mathbb{V}^{{\mathbb{Q}_T}}}[{x_i}(T)] &=& \int\limits_0^T {{e^{ - 2(T - u){\varkappa_i}}}(\sigma _{1i}^2 + \sigma _{2i}^2)du}  = (\sigma _{1i}^2 + \sigma _{2i}^2)\frac{{1 - {e^{ - 2{\varkappa_i}T}}}}{{2{\varkappa_i}}}\\
+\text{Cov}^{{\mathbb{Q}_T}}[{x_1}(T),{x_2}(T)] &=& \int\limits_0^T {{e^{ - (T - u)({\varkappa_1} + {\varkappa_2})}}({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})du}  = ({\sigma _{11}}{\sigma _{12}} + {\sigma _{21}}{\sigma _{22}})\frac{{1 - {e^{ - ({\varkappa_1} + {\varkappa_2})T}}}}{{{\varkappa_1} + {\varkappa_2}}}.
 \end{eqnarray*}
 Since $x_1, x_2$ are jointly normal, based on the properties of conditional normal variables we can obtain the $x_2$--conditional moments
 \begin{eqnarray*}
@@ -180,7 +264,12 @@ In the two-factor Gaussian model bond price $P$ is a deterministic function of $
   P(T,s, x(T)) = \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2}(T) + A(T,s)} \right).
 \end{equation}
 At time $t=0$, under the measure $\mathbb{Q}_T$ the (put) bond option reads
-\begin{eqnarray*}p(0;T,s,K) &=& P(0,T)\int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {p(T;T,s,K;{x_1}(T),{x_2}(T))|{x_2}(T) = {x_2}} \right]{f_{{x_2}}}({x_2})d{x_2}} \\ &=& P(0,T)\int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {K - \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {KP(0,T) - P(0,s)\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {KP(0,T) - P(0,s)\exp \left( { - {G_1}(T,s){x_1}(T)} \right)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\ &=& \int\limits_{ - \infty }^\infty  {P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right){\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {{K^*} - \exp \left( { - {G_1}(T,s){x_1}(T)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}}, 
+\begin{eqnarray*}
+p(0;T,s,K) &=& P(0,T)\int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}\left[ {p(T;T,s,K;{x_1}(T),{x_2}(T))|{x_2}(T) = {x_2}} \right]{f_{{x_2}}}({x_2})d{x_2}} \\
+ &=& P(0,T)\int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {K - \frac{{P(0,s)}}{{P(0,T)}}\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\
+ &=& \int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {KP(0,T) - P(0,s)\exp \left( { - {G_1}(T,s){x_1}(T) - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\
+ &=& \int\limits_{ - \infty }^\infty  {{\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {KP(0,T) - P(0,s)\exp \left( { - {G_1}(T,s){x_1}(T)} \right)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}} \\
+ &=& \int\limits_{ - \infty }^\infty  {P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right){\mathbb{E}^{{\mathbb{Q}_T}}}{{\left[ {{K^*} - \exp \left( { - {G_1}(T,s){x_1}(T)} \right)} \right]}^ + }{f_{{x_2}}}({x_2})d{x_2}}, 
 \end{eqnarray*}
 where
 \begin{equation*}
@@ -191,7 +280,10 @@ Thus, conditionally on $x_2(T)=x_2$ the bond option value at time $t=0$ is
   p(0;T,s,K|{x_2}(T) = {x_2}) = P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right){\mathbb{E}^{{\mathbb{Q}_T}}}{\left[ {{K^*} - \exp \left( { - {G_1}(T,s){x_1}(T)} \right)} \right]^ + }.
 \end{equation}
 The equation \eqref{eq:conditional_put_gaussian2f} is actually a Black-Scholes-like problem and therefore
-\begin{eqnarray*}p(0;T,s,K|{x_2}(T) = {x_2}) &=& P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)\left( {{K^*}N( - {d_ - }) - {e^{\Omega (T,s,{x_2})}}N( - {d_ + })} \right)\\{d_ \pm } &=& \frac{{\Omega (T,s,{x_2}) - \ln {K^*} \pm \frac{1}{2}G_1^2(T,s)s_1^2(T,{x_2})}}{{{G_1}(T,s){s_1}(T,{x_2})}}\\\Omega (T,s,{x_2}) &=&  - {\mu _1}(T,{x_2}){G_1}(T,s) + \frac{1}{2}G_1^2(T,s)s_1^2(T,{x_2}).
+\begin{eqnarray*}
+p(0;T,s,K|{x_2}(T) = {x_2}) &=& P(0,s)\exp \left( { - {G_2}(T,s){x_2} + A(T,s)} \right)\left( {{K^*}N( - {d_ - }) - {e^{\Omega (T,s,{x_2})}}N( - {d_ + })} \right)\\
+{d_ \pm } &=& \frac{{\Omega (T,s,{x_2}) - \ln {K^*} \pm \frac{1}{2}G_1^2(T,s)s_1^2(T,{x_2})}}{{{G_1}(T,s){s_1}(T,{x_2})}}\\
+\Omega (T,s,{x_2}) &=&  - {\mu _1}(T,{x_2}){G_1}(T,s) + \frac{1}{2}G_1^2(T,s)s_1^2(T,{x_2}).
 \end{eqnarray*}
 For completeness we note that an analogous $x_2$--conditional call option price would be
 \begin{equation*}
@@ -222,8 +314,11 @@ and the above equality can be rewritten as
 \end{equation*}
 In terms of $K_i$ we can write the swaption payoff as
 \small
-\begin{eqnarray*}V({T_0},{x_2}) &=& \left( {{K_N}({x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{K_i}({x_2})}  - P({T_0},{T_N};{x_1}(T),{x_2}) - K\sum\limits_{i = 1}^N {{\tau _i}P({T_0},{T_i};{x_1}(T),{x_2})} } \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }}\\ &=& \left( {{K_N}({x_2}) - P({T_0},{T_N};{x_1}(T),{x_2})} \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }} \\
-&+& K\sum\limits_{i = 1}^N {{\tau _i}\left( {{K_i}({x_2}) - P({T_0},{T_i};{x_1}(T),{x_2})} \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }}} \\ &=& {\left( {{K_N}({x_2}) - P({T_0},{T_N};{x_1}(T),{x_2})} \right)^ + } + K\sum\limits_{i = 1}^N {{\tau _i}{{\left( {{K_i}({x_2}) - P({T_0},{T_i};{x_1}(T),{x_2})} \right)}^ + }}.
+\begin{eqnarray*}
+V({T_0},{x_2}) &=& \left( {{K_N}({x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{K_i}({x_2})}  - P({T_0},{T_N};{x_1}(T),{x_2}) - K\sum\limits_{i = 1}^N {{\tau _i}P({T_0},{T_i};{x_1}(T),{x_2})} } \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }}\\
+ &=& \left( {{K_N}({x_2}) - P({T_0},{T_N};{x_1}(T),{x_2})} \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }} \\
+&+& K\sum\limits_{i = 1}^N {{\tau _i}\left( {{K_i}({x_2}) - P({T_0},{T_i};{x_1}(T),{x_2})} \right){{\bf{1}}_{\{ {x_1}(T) > x_1^*({x_2})\} }}} \\
+ &=& {\left( {{K_N}({x_2}) - P({T_0},{T_N};{x_1}(T),{x_2})} \right)^ + } + K\sum\limits_{i = 1}^N {{\tau _i}{{\left( {{K_i}({x_2}) - P({T_0},{T_i};{x_1}(T),{x_2})} \right)}^ + }}.
 \end{eqnarray*}
 \normalsize
 This means a payer swaption can be written as a portfolio of bond put options
@@ -235,16 +330,66 @@ where
   {p_i}(0,{x_2}) = p(0;{T_0},{T_i},{K_i}|{x_2}(T_0) = {x_2}).
 \end{equation*}
 The unconditional payer swaption formula can then be obtained by integrating over the density of $x_2$, thus
-\begin{eqnarray*}V(0) &=& \int\limits_{ - \infty }^\infty  {\left( {{p_N}(0,{x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{p_i}(0,{x_2})} } \right){f_{{x_2}}}({x_2})d{x_2}} \nonumber \\ &=& \int\limits_{ - \infty }^\infty  {\frac{{{p_N}(0,{x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{p_i}(0,{x_2})} }}{{\sqrt {{\mathbb{V}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]} }}{f_N}\left( {\frac{{{x_2} - {\mathbb{E}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]}}{{\sqrt {{\mathbb{V}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]} }}} \right)d{x_2}},
-\end{eqnarray*}
+\begin{eqnarray}
+V(0) &=& \int\limits_{ - \infty }^\infty  {\left( {{p_N}(0,{x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{p_i}(0,{x_2})} } \right){f_{{x_2}}}({x_2})d{x_2}} \nonumber \nonumber \\
+ &=& \int\limits_{ - \infty }^\infty  {\frac{{{p_N}(0,{x_2}) + K\sum\limits_{i = 1}^N {{\tau _i}{p_i}(0,{x_2})} }}{{\sqrt {{\mathbb{V}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]} }}{f_N}\left( {\frac{{{x_2} - {\mathbb{E}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]}}{{\sqrt {{\mathbb{V}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T_0)]} }}} \right)d{x_2}},\label{eq:swaption_formula_gaussian2f}
+\end{eqnarray}
 where $f_{x_2}$ is the density for $x_2(T_0)$, i.e. a normal density for a variable with mean ${{\mathbb{E}^{{\mathbb{Q}_{T_0}}}}[{x_2}(T)]}$ and variance $\mathbb{V}{^{{\mathbb{Q}_{T_0}}}[{x_2}(T_0)]}$ and $f_N$ is the standard normal density.
 
+\subsection{Approximating swaption formula for Gaussian models}
+The swaption formula \eqref{eq:swaption_formula_gaussian2f} can be evaluated but numerically, involving a root search within an integral computation.\footnote{We integrate over various values of $x_2$ and at each value $x_2$ we are finding a critical value $x_1^*({x_2})$ by a root-search.} This is very inconvenient and technically too demanding. An approximating formula can be derived, losing a small amount of precision but giving a significant speed improvement. Furthermore, the formula is applicable to $n$--factor setting, not necessarily just two-factor. \\
 
+\noindent Given an annuity 
+\begin{equation*}
+A(t) = A(t|{T_0},{T_N}) = \sum\limits_{i = 1}^N {{\tau _i}P(t,{T_i})},
+\end{equation*}
+payer swaption payoff can be expressed as
+\begin{equation*}
+V({T_0}) = A(t){\left( {S({T_0}) - K} \right)^ + },
+\end{equation*}
+where $S$ is the forward swap rate for the underlying swap
+\begin{equation*}
+S(t) = \frac{{P(t,{T_0}) - P(t,{T_N})}}{{A(t)}}.
+\end{equation*}
+It is well known that under the annuity measure ${\mathbb{Q}_A}$ associated with $A$ as numeraire, the forward swap rate is a ${\mathbb{Q}_A}$--martingale and we can write
+\begin{equation*}
+V(0) = A(0){\mathbb{E}^{{\mathbb{Q}_A}}}\left[ {{{\left( {S({T_0}) - K} \right)}^ + }} \right].
+\end{equation*}
+It can also be shown that $S(t)=S(t,x(t))$ follows
+\begin{equation*}
+dS(t) = q{(t,x(t))^{\rm{T}}}\sigma {(t)^{\rm{T}}}dW(t),
+\end{equation*}
+where $q$ is defined as
+\begin{equation*}
+{q_j}(t,x) = \frac{{P(t,{T_0},x){G_j}(t,{T_0}) - P(t,{T_N},x){G_j}(t,{T_N}) - S(t,x)\sum\limits_{i = 1}^N {{\tau _i}P(t,{T_i},x){G_j}(t,{T_i})} }}{{A(t,x)}}.
+\end{equation*}
+Despite $x$ being stochastic, ${q_j}(t,x(t))$ is very close to a constant and therefore as approximation we can write
+\begin{equation*}
+{q_j}(t,x(t)) \approx {q_j}(t,\bar x(t)),
+\end{equation*}
+where $\bar x(t)$ is a deterministic proxy for the random state variables $x(t)$. A reasonable proxy is to set $\bar x(t) = {\bf{0}}$ and will be used in our model.
 
-
-
-
-
+Then the following Bachelier formula is a well-known result for normal models.
+\begin{lemma}[Approximating swaption formula]
+	Let $\bar x(t)$ be a deterministic function of time. Then the approximating payer swaption formula in the multifactor gaussian model reads
+	\begin{equation*}
+	V(0) = A(0)\left( {(S(0) - K)N(d) + \sqrt v {f_N}(d)} \right),
+	\end{equation*}
+	with 
+	\begin{equation*}
+	d = \frac{{S(0) - K}}{{\sqrt v }},v = \int\limits_0^{{T_0}} {{{\left\| {q{{(t,\bar x(t))}^{\rm{T}}}\sigma {{(t)}^{\rm{T}}}} \right\|}^2}} dt.
+	\end{equation*}
+\end{lemma}
+Although this also involves integration, it is a much simpler integration than in the exact valuation formula \eqref{eq:swaption_formula_gaussian2f}.
 
 \newpage
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{9}
+	\bibitem{piterbargII}
+	Andersen, Leif B., and Vladimir V. Piterbarg. 
+	\textit{Interest rate modeling}. 
+	London: Atlantic Financial Press, 2010. Print.
+\end{thebibliography}
+
 \end{document}
