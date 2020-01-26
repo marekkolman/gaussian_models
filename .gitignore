@@ -1,5 +1,6 @@
 .ipynb_checkpoints/
 .texpadtmp/
+__pycache__
 *.log
 *.pdf
 *.dat

@@ -131,7 +131,7 @@ Given the above settings in place, the bond price can be computed as
 
 \subsection{Two-factor Gaussian model}
 Of a particular interest is a two factor model with \textit{constant} coefficients. Such a model will be fully determined by a mean reversion speeds $\varkappa_1, \varkappa_2$ and a diffusion matrix $\sigma(t)=\sigma$. Let us define $g$ and $h$ as
-\begin{eqnarray*}
+\begin{eqnarray}
 g(t) &=& \left( {\begin{array}{*{20}{c}}
 {{\sigma _{11}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{12}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}\\
 {{\sigma _{21}}(t){e^{\int\limits_0^t {{\varkappa _1}(u)du} }}}&{{\sigma _{22}}(t){e^{\int\limits_0^t {{\varkappa _2}(u)du} }}}
@@ -146,7 +146,7 @@ h(t) &=& \left( {\begin{array}{*{20}{c}}
 {{e^{ - {\varkappa _1}t}}}\\
 {{e^{ - {\varkappa _2}t}}}
 \end{array}} \right).
-\end{eqnarray*}
+\end{eqnarray}
 Having a look at the diffusion coefficient (matrix) of $x$ in \eqref{eq:dx_dy_gaussian2f} gives
 \begin{equation*}
   g(t){\rm{diag(}}h(t)) = g(t)H(t) = \left( {\begin{array}{*{20}{c}}
@@ -155,12 +155,12 @@ Having a look at the diffusion coefficient (matrix) of $x$ in \eqref{eq:dx_dy_ga
 \end{array}} \right) = \sigma (t) \equiv \sigma.
 \end{equation*}
 Furthermore following \eqref{eq:MR_mat_gaussian} we also get a mean reversion matrix
-\begin{equation*}
+\begin{equation}
   \varkappa (t) = \varkappa  = \left( {\begin{array}{*{20}{c}}
 {{\varkappa _1}}&0\\
 0&{{\varkappa _2}}
 \end{array}} \right).
-\end{equation*}
+\end{equation}
 Under this setup, the state variables $x = {({x_1},{x_2})^{\rm{T}}}$ in \eqref{eq:dx_dy_gaussian2f} follow 
 \begin{eqnarray*}
 \left( {\begin{array}{*{20}{c}}
