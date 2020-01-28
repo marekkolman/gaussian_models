@@ -2,7 +2,6 @@
 .texpadtmp/
 __pycache__
 *.log
-*.pdf
 *.dat
 *.aux
 *.gz

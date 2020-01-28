@@ -8,9 +8,10 @@ from tqdm import tqdm
 
 class gaussian_model:
         
-    def __init__(self, params, ycrv_t, ycrv_rates, ycrv_freq = 9999):
+    def __init__(self, params, ycrv_t, ycrv_rates, ycrv_freq = 9999, integration_steps = 300):
         self.kappas, self.sigmas = self.__build_params_model(params)
         self.get_df              = lambda t: bf.get_df(t, ycrv_t, ycrv_rates, ycrv_freq)
+        self.integration_steps   = integration_steps
         
     def __build_params_model(self, params):
         '''
@@ -183,7 +184,7 @@ class gaussian_model:
             var_x2 = self.__var(T0)[1]
             return (bond_option[-1]+K*swap_yearfrac*sum(bond_option))/np.sqrt(var_x2)*norm.pdf(x2/np.sqrt(var_x2))
             
-        x2_grid = np.linspace(-0.6, 0.6, 1500)
+        x2_grid = np.linspace(-0.35, 0.35, self.integration_steps)
         swaption_val_x2 = []
         for x2 in x2_grid:
             swaption_val_x2.append(swaption_x2_cond(K, T0, TN, swap_yearfrac, w, x2))
